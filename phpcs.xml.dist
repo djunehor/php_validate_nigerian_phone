@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<ruleset name="validate_nigerian_phone">
+    <description>A PHP module to validate and format a Nigerian phone number as well as deduce the network provider or area code</description>
+    <arg value="p" />
+
+    <config name="ignore_warnings_on_exit" value="1" />
+    <config name="ignore_errors_on_exit" value="1" />
+
+    <arg name="colors" />
+    <arg value="s" />
+
+    <!-- Use the PSR2 Standard-->
+    <rule ref="PSR2" />
+</ruleset>
