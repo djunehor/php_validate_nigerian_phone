@@ -8,8 +8,6 @@ Author URI: https://github.com/djunehor
 */
 namespace Djunehor\Validator;
 
-use phpDocumentor\Reflection\Types\Self_;
-
 class NigerianPhone {
 
 	public static $allPrefixes = [
