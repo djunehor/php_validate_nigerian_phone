@@ -36,6 +36,7 @@ $phone->getNetwork(); // mtn
 // Check if is mtn
 $phone->isMtn(); // True
 
+
 // Get network from phone number prefix e.g
 $phone->getNetworkByPrefix('0703'); // mtn
 

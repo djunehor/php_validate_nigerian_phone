@@ -1,0 +1,71 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/php:7.1-browsers
+
+    # Specify service dependencies here if necessary
+    # CircleCI maintains a library of pre-built images 4
+    # documented at https://circleci.com/docs/2.0/circleci-images/
+    # - image: circleci/mysql:9.4
+
+    working_directory: ~/repo
+
+    #        branches:
+    #            only: master
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Install pakaces
+          command: sudo apt-get install -y libpng-dev libfreetype6-dev libjpeg-dev librabbitmq-dev
+
+      - run:
+          name: Install PHP Extensions
+          command: sudo docker-php-ext-configure gd --with-gd --with-jpeg-dir --with-png-dir --with-freetype-dir && sudo docker-php-ext-install gd
+
+      - run:
+          name: Install amqp extention
+          command: curl -L -o /tmp/amqp.tar.gz https://pecl.php.net/get/amqp-1.9.3.tgz && tar xfz /tmp/amqp.tar.gz && rm -r /tmp/amqp.tar.gz && sudo mkdir -p /usr/src/php/ext/amqp && sudo mv amqp-1.9.3 /usr/src/php/ext/amqp && cd /usr/src/php/ext/amqp/amqp-1.9.3 && sudo phpize && sudo ./configure --with-amqp && sudo make && sudo make install && sudo cp -a /usr/src/php/ext/amqp/amqp-1.9.3/. /usr/src/php/ext/amqp/ && sudo docker-php-ext-install amqp
+      #            && sudo make && sudo make install && sudo docker-php-ext-install amqp
+
+      - run: composer install -n --prefer-dist
+
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      - run: mkdir var/data
+
+      # run tests!
+      - run: ./vendor/bin/simple-phpunit --log-junit ~/phpunit/junit.xml
+
+      - store_test_results:
+          path: ~/phpunit
+
+      - store_artifacts:
+          path: ~/phpunit
+
+workflows:
+  version: 2
+
+  build_tests:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
