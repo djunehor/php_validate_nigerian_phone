@@ -13,9 +13,10 @@ class PhoneValidatorServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 
-	protected $message = 'The number you provided is not a valid Nigerian number!';
+	protected $message = 'The phone number you provided is not valid!';
+
 	public function boot() {
-		Validator::extend('phone_ng', function ($attribute, $value, $parameters, $validator) {
+		Validator::extend('ngphone', function ($attribute, $value, $parameters, $validator) {
 
 			$phone = new NigerianPhone($value);
 			$type = (!empty($parameters)) ? head($parameters) : null;
@@ -26,6 +27,7 @@ class PhoneValidatorServiceProvider extends ServiceProvider {
 					break;
 				case 'land':
 					return $phone->isValidLandLine;
+
 				default:
 					return $phone->isValid();
 			}

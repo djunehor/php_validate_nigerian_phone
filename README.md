@@ -3,7 +3,7 @@
 
 #### Issues and pull requests welcome.
 
-A Python module to validate and format a Nigerian phone number as well as deduce the network provider or area code.
+A PHP module to validate and format a Nigerian phone number as well as deduce the network provider or area code.
 
 ## NOTE: The network resolution function can't be accurate because Nigeria implemented [Mobile Number Portability](https://en.wikipedia.org/wiki/Mobile_number_portability) in 2013, so the number prefix cannot be reliably used to determine operator anymore.
 
@@ -15,12 +15,43 @@ A Python module to validate and format a Nigerian phone number as well as deduce
 * [Run Tests](#tests)
 
 ## Installation
-You will need [PHP 7.x](https://www.php.net/) and [composer](https://getcomposer.org/download/).
+You will need >[PHP 5.6](https://www.php.net/) and [composer](https://getcomposer.org/download/).
 
 Install using composer: `composer require djunehor/validate_nigerian_phone`
 
-## Usage
+### In a Laravel project
+* If using Laravel 5.5 and above, no further action required
+* If you're using Laravel < 5.5, you'll need to register the service provider. Open up config/app.php and add the following to the providers array:
+`Djunehor\Validator\PhoneValidatorServiceProvider::class`
 
+## Usage
+### In Laravel
+```php
+...
+
+/*This checks if the number supplied
+*is a valid nigerian number
+* either land line or mobile number
+*/
+public function controllerName(Request $request) {
+		$request->validate( [
+			'phone' => 'required|ngphone'
+		]);
+	}
+	
+//to validate if it's a mobile number
+$request->validate( [
+			'phone' => 'required|ngphone:mobile'
+		]);
+		
+//to validate if it's a landline
+$request->validate( [
+			'phone' => 'required|ngphone:land'
+		]);		
+```
+
+# In a PHP project
+If autoload is not enabled, add `require vendor/autoload.php` to the top of the file, then
 ```php
 use \Djunehor\Validator\NigerianPhone;
 

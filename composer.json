@@ -8,7 +8,9 @@
         "nigerian",
         "phone",
         "validate",
-        "network"
+        "network",
+		"laravel",
+		"php"
     ],
     "homepage": "https://github.com/djunehor/php_validate_nigerian_phone",
     "license": "MIT",
