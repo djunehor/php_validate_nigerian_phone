@@ -246,7 +246,7 @@ class NigerianPhone {
 	}
 
 	public function isMtn() {
-		return ( in_array( substr( $this->formatted(), 0, 5 ), self::$allPrefixes['visafone'] ) or in_array( substr( $this->formatted(), 0, 4 ), self::$allPrefixes['mtn'] ) );
+		return ( in_array( substr( $this->formatted(), 0, 5 ), self::$allPrefixes['visafone'] ) || in_array( substr( $this->formatted(), 0, 4 ), self::$allPrefixes['mtn'] ) );
 	}
 
 	public function isGlo() {
